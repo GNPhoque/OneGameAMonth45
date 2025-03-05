@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float speedMult;
 	[SerializeField] private float accelRatio;
 	[SerializeField] private float rotaRatio;
+	[SerializeField] private float rotaWheelie;
 
 	private Rigidbody rb;
 	private new Transform transform;
@@ -74,7 +75,13 @@ public class PlayerController : MonoBehaviour
 		rb.AddForce(transform.forward * inputAccel * speedMult * accelRatio, ForceMode.Acceleration);
 
 		//Steering
-		Quaternion quaternion = Quaternion.Euler(0f, inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio, 0f);
-		rb.MoveRotation(rb.rotation * quaternion);
+		Vector3 euler = rb.rotation.eulerAngles;
+
+		float yRotation = euler.y + (inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
+
+		float maxTilt = 20f;
+		float zTilt = Mathf.Clamp(inputDirection.x * rotaWheelie, -maxTilt, maxTilt);
+		Quaternion newRotation = Quaternion.Euler(0f, yRotation, zTilt);
+		rb.MoveRotation(newRotation);
 	}
 }
