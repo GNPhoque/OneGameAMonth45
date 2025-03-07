@@ -622,7 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicsTransform: {fileID: 7885008310797552743}
-  speedMult: 100
+  speedMult: 130
   accelRatio: 0.2
   rotaRatio: 1.2
   rotaWheelie: 30
