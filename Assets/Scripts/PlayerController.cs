@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+	[SerializeField] private Transform graphicsTransform;
+
 	[SerializeField] private float speedMult;
 	[SerializeField] private float accelRatio;
 	[SerializeField] private float rotaRatio;
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		transform = gameObject.transform;
+
+		rb.centerOfMass = Vector3.zero;
 	}
 
 	private void FixedUpdate()
@@ -34,13 +38,13 @@ public class PlayerController : MonoBehaviour
 	#region INPUTS
 	public void OnAccelerate(InputValue state)
 	{
-		Debug.Log(state.Get<float>());
+		//Debug.Log(state.Get<float>());
 		inputAccel = state.Get<float>();
 	}
 
 	public void OnBrake(InputValue state)
 	{
-		Debug.Log(state.Get<float>());
+		//Debug.Log(state.Get<float>());
 		inputBrake = state.Get<float>();
 	}
 
@@ -61,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
 	public void OnDirection(InputValue state)
 	{
-		Debug.Log(state.Get<Vector2>());
+		//Debug.Log(state.Get<Vector2>());
 		inputDirection = state.Get<Vector2>();
 	} 
 	#endregion
@@ -69,19 +73,21 @@ public class PlayerController : MonoBehaviour
 	private void Move()
 	{
 		//Can move?
-		//Calculate movement
 
 		//Acceleration
-		rb.AddForce(transform.forward * inputAccel * speedMult * accelRatio, ForceMode.Acceleration);
+		rb.AddForce(transform.forward * inputAccel * speedMult * accelRatio, ForceMode.Force);
+		Debug.DrawLine(transform.position + rb.centerOfMass, transform.position + rb.centerOfMass + transform.forward * inputAccel * speedMult * accelRatio, Color.red);
 
 		//Steering
 		Vector3 euler = rb.rotation.eulerAngles;
-
+		print(inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 		float yRotation = euler.y + (inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 
-		float maxTilt = 20f;
-		float zTilt = Mathf.Clamp(inputDirection.x * rotaWheelie, -maxTilt, maxTilt);
-		Quaternion newRotation = Quaternion.Euler(0f, yRotation, zTilt);
+		//Tilt
+		float zTilt = Mathf.Clamp(inputDirection.x * rotaWheelie, -rotaWheelie, rotaWheelie);
+		graphicsTransform.rotation = Quaternion.Euler(euler.x, yRotation, euler.z + zTilt);
+
+		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
 		rb.MoveRotation(newRotation);
 	}
 }
