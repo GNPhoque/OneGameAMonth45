@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 	private Vector2 inputDirection;
 
 	public event Action<PlayerController> OnRespawnPressed;
+	public event Action<PlayerController> OnConfirmPressed;
+	public event Action<Vector2> OnDirectionChanged;
 
 	#region MONOBEHAVIOUR
 	private void Awake()
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
 	public void OnConfirm(InputValue state)
 	{
 		Debug.Log(state.isPressed);
+		OnConfirmPressed?.Invoke(this);
 	}
 
 	public void OnCancel(InputValue state)
@@ -69,8 +72,9 @@ public class PlayerController : MonoBehaviour
 
 	public void OnDirection(InputValue state)
 	{
-		//Debug.Log(state.Get<Vector2>());
+		Debug.Log(state.Get<Vector2>());
 		inputDirection = state.Get<Vector2>();
+		OnDirectionChanged?.Invoke(inputDirection);
 	} 
 	#endregion
 
