@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
 	private float inputAccel;
 	private float inputBrake;
 	private Vector2 inputDirection;
+
+	public event Action<PlayerController> OnRespawnPressed;
 
 	#region MONOBEHAVIOUR
 	private void Awake()
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
 	public void OnCancel(InputValue state)
 	{
 		Debug.Log(state.isPressed);
+		OnRespawnPressed?.Invoke(this);
 	}
 
 	public void OnStart(InputValue state)
@@ -80,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
 		//Steering
 		Vector3 euler = rb.rotation.eulerAngles;
-		print(inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
+		//print(inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 		float yRotation = euler.y + (inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 
 		//Tilt
