@@ -10,7 +10,7 @@ public class Checkpoint : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		PlayerController pc = null;
-		if (pc = other.GetComponent<PlayerController>())
+		if (pc = other.transform.parent?.GetComponent<PlayerController>())
 		{
 			OnPlayerEntered?.Invoke(pc, this);
 		}

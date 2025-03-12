@@ -3694,16 +3694,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpoints:
+  - {fileID: 522210753}
   - {fileID: 805049012}
   playerController: {fileID: 328583592}
-  minigameInputImage: {fileID: 1672755812}
-  fuelMinigame: {fileID: 1073216499}
-  fuelFillImage: {fileID: 1340655069}
-  stickLeft: {fileID: 21300000, guid: e63475ed772ae1441be0e48aef07161c, type: 3}
-  stickUp: {fileID: 21300000, guid: 501965398358df54198ebba02df3dbf3, type: 3}
-  stickRight: {fileID: 21300000, guid: d437f6c0e18707f47a26ec2b5b770319, type: 3}
-  stickDown: {fileID: 21300000, guid: 5bfbce16b55a585458dea66c3cecf5a4, type: 3}
-  buttonA: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
+  minigames: 000000000100000002000000
 --- !u!1001 &1176967549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5949,6 +5943,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2487651584429904094, guid: 0b8b7e9d4b1b84646b164b8321139568, type: 3}
+      propertyPath: fuelMinigame
+      value: 
+      objectReference: {fileID: 1073216499}
+    - target: {fileID: 2487651584429904094, guid: 0b8b7e9d4b1b84646b164b8321139568, type: 3}
+      propertyPath: fuelFillImage
+      value: 
+      objectReference: {fileID: 1340655069}
+    - target: {fileID: 2487651584429904094, guid: 0b8b7e9d4b1b84646b164b8321139568, type: 3}
+      propertyPath: minigameInputImage
+      value: 
+      objectReference: {fileID: 1672755812}
     - target: {fileID: 7621661616736841054, guid: 0b8b7e9d4b1b84646b164b8321139568, type: 3}
       propertyPath: m_Name
       value: Player

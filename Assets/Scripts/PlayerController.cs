@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerUI))]
 public class PlayerController : MonoBehaviour
 {
+	[SerializeField] public PlayerUI playerUI;
 	[SerializeField] private Transform graphicsTransform;
 
 	[SerializeField] private float speedMult;
@@ -23,11 +25,12 @@ public class PlayerController : MonoBehaviour
 
 	public event Action<PlayerController> OnRespawnPressed;
 	public event Action<PlayerController> OnConfirmPressed;
-	public event Action<Vector2> OnDirectionChanged;
+	public event Action<PlayerController, Vector2> OnDirectionChanged;
 
 	#region MONOBEHAVIOUR
 	private void Awake()
 	{
+		playerUI = GetComponent<PlayerUI>();
 		rb = GetComponent<Rigidbody>();
 		transform = gameObject.transform;
 
@@ -72,9 +75,9 @@ public class PlayerController : MonoBehaviour
 
 	public void OnDirection(InputValue state)
 	{
-		Debug.Log(state.Get<Vector2>());
+		//Debug.Log(state.Get<Vector2>());
 		inputDirection = state.Get<Vector2>();
-		OnDirectionChanged?.Invoke(inputDirection);
+		OnDirectionChanged?.Invoke(this, inputDirection);
 	} 
 	#endregion
 

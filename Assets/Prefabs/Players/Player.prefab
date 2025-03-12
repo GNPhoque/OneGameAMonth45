@@ -939,6 +939,7 @@ GameObject:
   - component: {fileID: 1893796836053746511}
   - component: {fileID: 8777818736243488775}
   - component: {fileID: 7380441259387734977}
+  - component: {fileID: 2487651584429904094}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1002,6 +1003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf20175fbfff1654ba36f7d1c2ab3efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUI: {fileID: 0}
   graphicsTransform: {fileID: 7885008310797552743}
   speedMult: 130
   accelRatio: 0.3
@@ -1031,12 +1033,56 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d09b503c-d806-4627-a623-d1c672d6ae65
+    m_ActionName: Actions/Accelerate[/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ec39b978-0f34-4602-b4c6-69352bc52703
+    m_ActionName: Actions/Brake[/XInputControllerWindows/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e4c6c3c-c619-4717-8cbd-cd636cd8d1b6
+    m_ActionName: Actions/Direction[/XInputControllerWindows/leftStick,/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 495ecd09-c4a9-47e2-8ace-89710effd92e
+    m_ActionName: Actions/Confirm[/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5303bb0b-0d77-4900-8224-f9abf17d6088
+    m_ActionName: Actions/Cancel[/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9beb825b-bb6b-4a68-8f2e-a206261377ed
+    m_ActionName: Actions/Start[/XInputControllerWindows/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Actions
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2487651584429904094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621661616736841054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1783738ca0347840813b34504474176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stickLeft: {fileID: 21300000, guid: e63475ed772ae1441be0e48aef07161c, type: 3}
+  stickUp: {fileID: 21300000, guid: 501965398358df54198ebba02df3dbf3, type: 3}
+  stickRight: {fileID: 21300000, guid: d437f6c0e18707f47a26ec2b5b770319, type: 3}
+  stickDown: {fileID: 21300000, guid: 5bfbce16b55a585458dea66c3cecf5a4, type: 3}
+  buttonA: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
+  minigameInputImage: {fileID: 0}
+  fuelMinigame: {fileID: 0}
+  fuelFillImage: {fileID: 0}
 --- !u!1 &8532373526458147788
 GameObject:
   m_ObjectHideFlags: 0
