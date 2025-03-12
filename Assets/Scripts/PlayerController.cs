@@ -83,8 +83,10 @@ public class PlayerController : MonoBehaviour
 		//Can move?
 
 		//Acceleration
-		rb.AddForce(transform.forward * inputAccel * speedMult * accelRatio, ForceMode.Force);
-		Debug.DrawLine(transform.position + rb.centerOfMass, transform.position + rb.centerOfMass + transform.forward * inputAccel * speedMult * accelRatio, Color.red);
+		Vector3 accel = transform.forward* inputAccel * speedMult * accelRatio;
+		//Vector3 accel = new Vector3(transform.forward.x, 0f, transform.forward.z) * inputAccel * speedMult * accelRatio;
+		rb.AddForce(accel, ForceMode.Force);
+		Debug.DrawLine(transform.position + rb.centerOfMass, transform.position + rb.centerOfMass + accel, Color.red);
 
 		//Steering
 		Vector3 euler = rb.rotation.eulerAngles;
