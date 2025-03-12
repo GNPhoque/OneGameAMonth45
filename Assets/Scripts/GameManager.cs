@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] private List<Checkpoint> checkpoints;
-	[SerializeField] private PlayerController playerController;
 	[SerializeField] private List<Minigames> minigames;
+	[SerializeField] private List<PlayerUI> playerUIs;
+	[SerializeField] private List<PlayerController> playerControllers;
 
 	private Dictionary<PlayerController, Checkpoint> playerCheckpoints;
+
 
 	public static GameManager instance;
 
@@ -26,14 +29,18 @@ public class GameManager : MonoBehaviour
 		playerCheckpoints = new Dictionary<PlayerController, Checkpoint>();
 	}
 
-	private void Start()
+	public void OnPlayerJoined(PlayerController pc)
 	{
-		playerCheckpoints.Add(playerController, checkpoints.Last());
+		playerControllers.Add(pc);
+
+		pc.playerUI = playerUIs[playerControllers.Count - 1];
+
+		playerCheckpoints.Add(pc, checkpoints.Last());
 		foreach (var checkpoint in checkpoints)
 		{
 			checkpoint.OnPlayerEntered += CheckCheckPoint;
 		}
-		playerController.OnRespawnPressed += PlayerController_OnRespawnPressed;
+		pc.OnRespawnPressed += PlayerController_OnRespawnPressed;
 	}
 
 	private void PlayerController_OnRespawnPressed(PlayerController pc)
@@ -41,15 +48,6 @@ public class GameManager : MonoBehaviour
 		pc.transform.position = playerCheckpoints[pc].transform.position;
 		pc.transform.rotation = playerCheckpoints[pc].transform.rotation;
 		pc.GetComponent<Rigidbody>().velocity = Vector3.zero;
-	}
-
-	private void OnDestroy()
-	{
-		foreach (var checkpoint in checkpoints)
-		{
-			checkpoint.OnPlayerEntered -= CheckCheckPoint;
-		}
-		playerController.OnRespawnPressed -= PlayerController_OnRespawnPressed;
 	}
 
 	private void CheckCheckPoint(PlayerController pc, Checkpoint checkpoint)

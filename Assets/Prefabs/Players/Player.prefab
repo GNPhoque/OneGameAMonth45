@@ -939,7 +939,6 @@ GameObject:
   - component: {fileID: 1893796836053746511}
   - component: {fileID: 8777818736243488775}
   - component: {fileID: 7380441259387734977}
-  - component: {fileID: 2487651584429904094}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1063,26 +1062,6 @@ MonoBehaviour:
   m_DefaultActionMap: Actions
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2487651584429904094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7621661616736841054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1783738ca0347840813b34504474176, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stickLeft: {fileID: 21300000, guid: e63475ed772ae1441be0e48aef07161c, type: 3}
-  stickUp: {fileID: 21300000, guid: 501965398358df54198ebba02df3dbf3, type: 3}
-  stickRight: {fileID: 21300000, guid: d437f6c0e18707f47a26ec2b5b770319, type: 3}
-  stickDown: {fileID: 21300000, guid: 5bfbce16b55a585458dea66c3cecf5a4, type: 3}
-  buttonA: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
-  minigameInputImage: {fileID: 0}
-  fuelMinigame: {fileID: 0}
-  fuelFillImage: {fileID: 0}
 --- !u!1 &8532373526458147788
 GameObject:
   m_ObjectHideFlags: 0

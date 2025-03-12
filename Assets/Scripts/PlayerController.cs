@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(PlayerUI))]
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] public PlayerUI playerUI;
+	public PlayerUI playerUI;
 	[SerializeField] private Transform graphicsTransform;
 
 	[SerializeField] private float speedMult;
@@ -30,7 +29,8 @@ public class PlayerController : MonoBehaviour
 	#region MONOBEHAVIOUR
 	private void Awake()
 	{
-		playerUI = GetComponent<PlayerUI>();
+		GameManager.instance.OnPlayerJoined(this);
+
 		rb = GetComponent<Rigidbody>();
 		transform = gameObject.transform;
 
