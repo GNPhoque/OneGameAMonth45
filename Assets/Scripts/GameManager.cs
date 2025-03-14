@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+	[SerializeField] Transform startPosition;
 	[SerializeField] private List<Checkpoint> checkpoints;
 	[SerializeField] private List<Minigames> minigames;
 	[SerializeField] private List<PlayerUI> playerUIs;
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
 			checkpoint.OnPlayerEntered += CheckCheckPoint;
 		}
 		pc.OnRespawnPressed += PlayerController_OnRespawnPressed;
+
+		pc.transform.position = startPosition.position;
 	}
 
 	private void PlayerController_OnRespawnPressed(PlayerController pc)

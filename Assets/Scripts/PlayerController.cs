@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float accelRatio;
 	[SerializeField] private float rotaRatio;
 	[SerializeField] private float rotaWheelie;
+	[SerializeField] private float tiltMaxPerSecond;
 
 	private Rigidbody rb;
 	private new Transform transform;
 
 	private float inputAccel;
 	private float inputBrake;
+	private float currentZTilt;
 	private Vector2 inputDirection;
 
 	public event Action<PlayerController> OnRespawnPressed;
@@ -97,7 +99,13 @@ public class PlayerController : MonoBehaviour
 		float yRotation = euler.y + (inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 
 		//Tilt
-		float zTilt = Mathf.Clamp(inputDirection.x * rotaWheelie, -rotaWheelie, rotaWheelie);
+		currentZTilt = Mathf.MoveTowards(currentZTilt, rotaWheelie * inputDirection.x, tiltMaxPerSecond * Time.fixedDeltaTime);
+
+		float zTilt = Mathf.Clamp(
+			currentZTilt,
+			-rotaWheelie, 
+			rotaWheelie
+		);
 		graphicsTransform.rotation = Quaternion.Euler(euler.x, yRotation, euler.z + zTilt);
 
 		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
