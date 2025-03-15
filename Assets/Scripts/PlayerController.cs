@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float rotaRatio;
 	[SerializeField] private float rotaWheelie;
 	[SerializeField] private float tiltMaxPerSecond;
+	[SerializeField] private float cameraMaxRotationPerSecond;
+	[SerializeField] private Camera camera;
 
 	private Rigidbody rb;
 	private new Transform transform;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	private float inputAccel;
 	private float inputBrake;
 	private float currentZTilt;
+	float currentCameraForward;
 	private Vector2 inputDirection;
 
 	public event Action<PlayerController> OnRespawnPressed;
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour
 		transform = gameObject.transform;
 
 		rb.centerOfMass = Vector3.zero;
+		currentCameraForward = camera.transform.rotation.eulerAngles.y;
 	}
 
 	private void FixedUpdate()
@@ -89,13 +93,11 @@ public class PlayerController : MonoBehaviour
 
 		//Acceleration
 		Vector3 accel = transform.forward* inputAccel * speedMult * accelRatio;
-		//Vector3 accel = new Vector3(transform.forward.x, 0f, transform.forward.z) * inputAccel * speedMult * accelRatio;
 		rb.AddForce(accel, ForceMode.Force);
 		Debug.DrawLine(transform.position + rb.centerOfMass, transform.position + rb.centerOfMass + accel, Color.red);
 
 		//Steering
 		Vector3 euler = rb.rotation.eulerAngles;
-		//print(inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 		float yRotation = euler.y + (inputDirection.x * Time.fixedDeltaTime * speedMult * rotaRatio);
 
 		//Tilt
@@ -107,6 +109,20 @@ public class PlayerController : MonoBehaviour
 			rotaWheelie
 		);
 		graphicsTransform.rotation = Quaternion.Euler(euler.x, yRotation, euler.z + zTilt);
+
+		//Camera smoothing
+		Vector3 cameraEuler = camera.transform.rotation.eulerAngles;
+		if(currentCameraForward - euler.y > 180)
+		{
+			currentCameraForward -= 360;
+		}
+		else if (euler.y - currentCameraForward > 180)
+		{
+			currentCameraForward += 360;
+		}
+		currentCameraForward = Mathf.MoveTowards(currentCameraForward, euler.y, cameraMaxRotationPerSecond * Time.fixedDeltaTime);
+		camera.transform.rotation = Quaternion.Euler(22f, currentCameraForward, 0f);
+		print(euler.y);
 
 		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
 		rb.MoveRotation(newRotation);

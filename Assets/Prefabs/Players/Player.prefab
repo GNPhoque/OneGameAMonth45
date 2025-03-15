@@ -775,6 +775,8 @@ MonoBehaviour:
   rotaRatio: 1.5
   rotaWheelie: 30
   tiltMaxPerSecond: 130
+  cameraMaxRotationPerSecond: 130
+  camera: {fileID: 6604318485599314193}
 --- !u!114 &7380441259387734977
 MonoBehaviour:
   m_ObjectHideFlags: 0
