@@ -9454,7 +9454,6 @@ MonoBehaviour:
   - {fileID: 212948139}
   - {fileID: 116171950}
   - {fileID: 498981064}
-  minigames: 000000000100000002000000
   playerUIs:
   - {fileID: 246189786}
   - {fileID: 243618580}
@@ -9475,8 +9474,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTimeBetweenGames: 10
   maxTimeBetweenGames: 20
+  maxMinigameDuration: 10
   minigames:
   - {fileID: 11400000, guid: d42dbc24db5e8f0438cc5e262116303b, type: 2}
+  - {fileID: 11400000, guid: 70a50d9dbfd4f49438638da5a5d8b5d8, type: 2}
   inputImage: {fileID: 1747695133}
   inputImageBackground: {fileID: 0}
   isMinigameRunning: 0
@@ -13092,7 +13093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1747695132
 RectTransform:
   m_ObjectHideFlags: 0

@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Minigames
-{
-	Unscrew, 
-	FuelTank,
-	Screw,
-	Mash
-}
-
 public abstract class AMinigame : ScriptableObject
 {
 	protected bool inputOk = false;
 	protected bool minigameOk = false;
+	protected bool gameTimeout = false;
+	protected bool gameCompleted = false;
 
 	protected Image inputImage;
 	protected Image inputImageBackground;
@@ -23,7 +17,7 @@ public abstract class AMinigame : ScriptableObject
 
 	public Action<PlayerController> OnMinigameCleared;
 
-	public IEnumerator Trigger(Image input, Image background)
+	public void Trigger(Image input, Image background)
 	{
 		inputImage = input;
 		inputImageBackground = background;
@@ -31,7 +25,8 @@ public abstract class AMinigame : ScriptableObject
 		inputOk = false;
 		minigameOk = false;
 
-		yield return GameManager.instance.StartCoroutine(GameSteps());
+		Debug.Log($"Starting minigame {nameof(this.GetType)}");
+		GameManager.instance.StartCoroutine(GameSteps());
 	}
 
 	protected abstract IEnumerator GameSteps();
@@ -64,6 +59,12 @@ public abstract class AMinigame : ScriptableObject
 	{
 		lastInputPlayer = pc;
 		inputOk = true;
+	}
+
+	protected IEnumerator CancelOnTimeout()
+	{
+		yield return new WaitForSeconds(MinigameManager.instance.maxMinigameDuration);
+		gameTimeout = true;
 	}
 
 	protected void TriggerGameCleared()

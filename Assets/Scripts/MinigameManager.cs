@@ -7,15 +7,17 @@ using Random = UnityEngine.Random;
 
 public class MinigameManager : MonoBehaviour
 {
-	[SerializeField] float minTimeBetweenGames;
-	[SerializeField] float maxTimeBetweenGames;
-	[SerializeField] List<AMinigame> minigames;
-	[SerializeField] Image inputImage;
-	[SerializeField] Image inputImageBackground;
+	[SerializeField] private float minTimeBetweenGames;
+	[SerializeField] private float maxTimeBetweenGames;
+	[SerializeField] public float maxMinigameDuration;
+	[SerializeField] private List<AMinigame> minigames;
+	[SerializeField] private Image inputImage;
+	[SerializeField] private Image inputImageBackground;
 
 	private bool canStartMinigame;
 	public bool isMinigameRunning;
 	private float currentTimeBeforeNextGame;
+	private AMinigame currentMinigame;
 
 	public static MinigameManager instance;
 
@@ -55,15 +57,16 @@ public class MinigameManager : MonoBehaviour
 	private void StartRandomMinigame()
 	{
 		isMinigameRunning = true;
-		AMinigame game = minigames[Random.Range(0, minigames.Count)];
+		currentMinigame = minigames[Random.Range(0, minigames.Count)];
 
-		game.OnMinigameCleared += OnMinigameCleared;
-		game.Trigger(inputImage, inputImageBackground);
+		currentMinigame.OnMinigameCleared += OnMinigameCleared;
+		currentMinigame.Trigger(inputImage, inputImageBackground);
 	}
 
 	private void OnMinigameCleared(PlayerController winner)
 	{
 		ResetBetweenGames();
+		currentMinigame.OnMinigameCleared -= OnMinigameCleared;
 	}
 
 	private void ResetBetweenGames()

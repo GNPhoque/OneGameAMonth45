@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 {
 	[SerializeField] Transform startPosition;
 	[SerializeField] private List<Checkpoint> checkpoints;
-	[SerializeField] private List<Minigames> minigames;
 	[SerializeField] private List<PlayerUI> playerUIs;
 	[SerializeField] public List<PlayerController> playerControllers;
 
@@ -45,7 +44,7 @@ public class GameManager : MonoBehaviour
 		pc.transform.position = startPosition.position;
 	}
 
-	private void PlayerController_OnRespawnPressed(PlayerController pc)
+	public void PlayerController_OnRespawnPressed(PlayerController pc)
 	{
 		pc.transform.position = playerCheckpoints[pc].transform.position;
 		pc.transform.rotation = playerCheckpoints[pc].transform.rotation;

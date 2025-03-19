@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3b8effecea96144f94e73281191dbf9, type: 3}
-  m_Name: Mash Minigame
+  m_Script: {fileID: 11500000, guid: 7f8d367b157f2de4c905be0ae454f4d9, type: 3}
+  m_Name: Reflex Minigame
   m_EditorClassIdentifier: 
   aButtonOn: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
-  aButtonOff: {fileID: 21300000, guid: c3ee95fa0a43a434da317947797ccbbc, type: 3}
-  animationStatesDuration: 0.5
-  rewardBoostAmount: 0.2
-  rewardBoostDuration: 0.5
-  minMashCount: 5
-  maxMashCount: 10

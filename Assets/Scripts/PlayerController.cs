@@ -127,4 +127,9 @@ public class PlayerController : MonoBehaviour
 		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
 		rb.MoveRotation(newRotation);
 	}
+
+	public void ChangeAccel(float change)
+	{
+		accelRatio += change;
+	}
 }
