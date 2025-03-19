@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
 	public void OnStart(InputValue state)
 	{
 		Debug.Log(state.isPressed);
+		MinigameManager.instance.StartManager();
 	}
 
 	public void OnDirection(InputValue state)
@@ -122,7 +123,6 @@ public class PlayerController : MonoBehaviour
 		}
 		currentCameraForward = Mathf.MoveTowards(currentCameraForward, euler.y, cameraMaxRotationPerSecond * Time.fixedDeltaTime);
 		camera.transform.rotation = Quaternion.Euler(22f, currentCameraForward, 0f);
-		print(euler.y);
 
 		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
 		rb.MoveRotation(newRotation);

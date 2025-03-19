@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,16 +9,25 @@ public enum Minigames
 	Unscrew, 
 	FuelTank,
 	Screw,
+	Mash
 }
 
-public abstract class AMinigame
+public abstract class AMinigame : ScriptableObject
 {
 	protected bool inputOk = false;
 	protected bool minigameOk = false;
-	public PlayerController playerController;
 
-	public IEnumerator Trigger()
+	protected Image inputImage;
+	protected Image inputImageBackground;
+	protected PlayerController lastInputPlayer;
+
+	public Action<PlayerController> OnMinigameCleared;
+
+	public IEnumerator Trigger(Image input, Image background)
 	{
+		inputImage = input;
+		inputImageBackground = background;
+
 		inputOk = false;
 		minigameOk = false;
 
@@ -28,50 +38,36 @@ public abstract class AMinigame
 
 	protected void CheckMinigameInputUp(PlayerController pc, Vector2 input)
 	{
-		if (pc != playerController)
-		{
-			return;
-		}
-
+		lastInputPlayer = pc;
 		inputOk = input.y > .7f;
 	}
 
 	protected void CheckMinigameInputLeft(PlayerController pc, Vector2 input)
 	{
-		if (pc != playerController)
-		{
-			return;
-		}
-
+		lastInputPlayer = pc;
 		inputOk = input.x < -.7f;
 	}
 
 	protected void CheckMinigameInputDown(PlayerController pc, Vector2 input)
 	{
-		if (pc != playerController)
-		{
-			return;
-		}
+		lastInputPlayer = pc;
 		inputOk = input.y < -.7f;
 	}
 
 	protected void CheckMinigameInputRight(PlayerController pc, Vector2 input)
 	{
-		if (pc != playerController)
-		{
-			return;
-		}
-
+		lastInputPlayer = pc;
 		inputOk = input.x > .7f;
 	}
 
 	protected void CheckMinigameInputConfirm(PlayerController pc)
 	{
-		if(pc != playerController)
-		{
-			return;
-		}
-
+		lastInputPlayer = pc;
 		inputOk = true;
+	}
+
+	protected void TriggerGameCleared()
+	{
+		OnMinigameCleared?.Invoke(lastInputPlayer);
 	}
 }

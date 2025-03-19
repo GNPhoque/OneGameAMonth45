@@ -11,10 +11,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private List<Checkpoint> checkpoints;
 	[SerializeField] private List<Minigames> minigames;
 	[SerializeField] private List<PlayerUI> playerUIs;
-	[SerializeField] private List<PlayerController> playerControllers;
+	[SerializeField] public List<PlayerController> playerControllers;
 
 	private Dictionary<PlayerController, Checkpoint> playerCheckpoints;
-
 
 	public static GameManager instance;
 
@@ -82,30 +81,6 @@ public class GameManager : MonoBehaviour
 		if(checkpoint == checkpoints.Last())
 		{
 			print($"{pc.name} finished a lap");
-			StartCoroutine(StartMinigames(pc));
-		}
-	}
-
-	private IEnumerator StartMinigames(PlayerController pc)
-	{
-		foreach (var item in minigames)
-		{
-			//setup
-			AMinigame minigame = null;
-			switch (item)
-			{
-				case Minigames.Unscrew:
-					minigame = new UnscrewMinigame();
-					break;
-				case Minigames.FuelTank:
-					minigame = new FuelTankMinigame();
-					break;
-				case Minigames.Screw:
-					minigame = new ScrewMinigame();
-					break;
-			}
-			minigame.playerController = pc;
-			yield return StartCoroutine(minigame.Trigger());
 		}
 	}
 }
