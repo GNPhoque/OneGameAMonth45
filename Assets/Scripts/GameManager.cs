@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -20,7 +21,11 @@ public class GameManager : MonoBehaviour
 	private Dictionary<PlayerController, Checkpoint> playerCheckpoints;
 	private Dictionary<PlayerController, Checkpoint> playerDistanceCheckpoints;
 
+	public event Action OnStartRacePressed;
+
 	public static GameManager instance;
+
+	public Action<InputValue> PlayerController_OnStartRacePressed { get; private set; }
 
 	private void Awake()
 	{
@@ -84,8 +89,19 @@ public class GameManager : MonoBehaviour
 			checkpoint.OnPlayerEntered += CheckCheckPoint;
 		}
 		pc.OnRespawnPressed += PlayerController_OnRespawnPressed;
+		pc.OnConfirmPressed += Pc_OnConfirmPressed;
 
 		pc.transform.position = startPosition.position;
+	}
+
+	private void Pc_OnConfirmPressed(PlayerController obj)
+	{
+		foreach (var item in playerControllers)
+		{
+			item.OnConfirmPressed -= Pc_OnConfirmPressed;
+		}
+
+		OnStartRacePressed?.Invoke();
 	}
 
 	public void PlayerController_OnRespawnPressed(PlayerController pc)
@@ -158,7 +174,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			if (checkpoint != checkpoints[checkpoints.IndexOf(previous) + 1])
+			if (checkpoint != distanceCheckpoints[distanceCheckpoints.IndexOf(previous) + 1])
 			{
 				print($"{pc.name} went through the wrong distance checkpoint");
 				return;
