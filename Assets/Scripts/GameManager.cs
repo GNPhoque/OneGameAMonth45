@@ -9,10 +9,16 @@ public class GameManager : MonoBehaviour
 {
 	[SerializeField] Transform startPosition;
 	[SerializeField] private List<Checkpoint> checkpoints;
-	[SerializeField] private List<PlayerUI> playerUIs;
 	[SerializeField] public List<PlayerController> playerControllers;
+	[SerializeField] public List<PlayerController> orderedPlayersList;
+	[SerializeField] public List<Checkpoint> distanceCheckpoints;
+
+	[SerializeField] public float lapDistance;
+	[SerializeField] public int raceLaps;
+	[SerializeField] public float positionRefreshDelay;
 
 	private Dictionary<PlayerController, Checkpoint> playerCheckpoints;
+	private Dictionary<PlayerController, Checkpoint> playerDistanceCheckpoints;
 
 	public static GameManager instance;
 
@@ -26,16 +32,54 @@ public class GameManager : MonoBehaviour
 		instance = this;
 
 		playerCheckpoints = new Dictionary<PlayerController, Checkpoint>();
+		playerDistanceCheckpoints = new Dictionary<PlayerController, Checkpoint>();
+
+		StartCoroutine(GetPlayersPositions());
+	}
+
+	private IEnumerator GetPlayersPositions()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(positionRefreshDelay);
+
+			for (int i = 0; i < playerControllers.Count; i++)
+			{
+				PlayerController pc = playerControllers[i];
+				pc.distance = lapDistance * pc.currentLap;
+
+				if (playerDistanceCheckpoints[pc] != distanceCheckpoints.Last())
+				{
+					for (int j = 0; j <= distanceCheckpoints.IndexOf(playerDistanceCheckpoints[pc]); j++)
+					{
+						pc.distance += distanceCheckpoints[j].distance;
+					}
+				}
+
+				pc.distance += Vector3.Distance(playerDistanceCheckpoints[pc].transform.position, pc.transform.position);
+			}
+			orderedPlayersList = orderedPlayersList.OrderByDescending(x => x.distance).ToList();
+			for (int i = 0; i < orderedPlayersList.Count; i++)
+			{
+				orderedPlayersList[i].UpdatePosition(i);
+			}
+		}
 	}
 
 	public void OnPlayerJoined(PlayerController pc)
 	{
 		playerControllers.Add(pc);
 
-		pc.playerUI = playerUIs[playerControllers.Count - 1];
+		pc.currentLap = 1;
 
+		orderedPlayersList.Add(pc);
 		playerCheckpoints.Add(pc, checkpoints.Last());
 		foreach (var checkpoint in checkpoints)
+		{
+			checkpoint.OnPlayerEntered += CheckCheckPoint;
+		}
+		playerDistanceCheckpoints.Add(pc, distanceCheckpoints.Last());
+		foreach (var checkpoint in distanceCheckpoints)
 		{
 			checkpoint.OnPlayerEntered += CheckCheckPoint;
 		}
@@ -53,14 +97,26 @@ public class GameManager : MonoBehaviour
 
 	private void CheckCheckPoint(PlayerController pc, Checkpoint checkpoint)
 	{
-		print($"{pc.name} passed a checkpoint {checkpoint.name}");
+		if (checkpoints.Contains(checkpoint))
+		{
+			CheckLapCheckpoint(pc, checkpoint);
+		}
+		else if (distanceCheckpoints.Contains(checkpoint))
+		{
+			CheckDistanceCheckpoint(pc, checkpoint);
+		}
+	}
+
+	private void CheckLapCheckpoint(PlayerController pc, Checkpoint checkpoint)
+	{
+		print($"{pc.name} passed a lap checkpoint {checkpoint.name}");
 
 		Checkpoint previous = playerCheckpoints[pc];
 
 		//Only valid checkpoint is the first one
-		if(previous == checkpoints.Last())
+		if (previous == checkpoints.Last())
 		{
-			if(checkpoint != checkpoints[0])
+			if (checkpoint != checkpoints[0])
 			{
 				print($"{pc.name} went through the wrong checkpoint");
 				return;
@@ -77,9 +133,37 @@ public class GameManager : MonoBehaviour
 			playerCheckpoints[pc] = checkpoint;
 		}
 
-		if(checkpoint == checkpoints.Last())
+		if (checkpoint == checkpoints.Last())
 		{
 			print($"{pc.name} finished a lap");
+			pc.LapCompleted();
+		}
+	}
+
+	private void CheckDistanceCheckpoint(PlayerController pc, Checkpoint checkpoint)
+	{
+		print($"{pc.name} passed a distance checkpoint {checkpoint.name}");
+
+		Checkpoint previous = playerDistanceCheckpoints[pc];
+
+		//Only valid checkpoint is the first one
+		if (previous == distanceCheckpoints.Last())
+		{
+			if (checkpoint != distanceCheckpoints[0])
+			{
+				print($"{pc.name} went through the wrong distance checkpoint");
+				return;
+			}
+			playerDistanceCheckpoints[pc] = checkpoint;
+		}
+		else
+		{
+			if (checkpoint != checkpoints[checkpoints.IndexOf(previous) + 1])
+			{
+				print($"{pc.name} went through the wrong distance checkpoint");
+				return;
+			}
+			playerDistanceCheckpoints[pc] = checkpoint;
 		}
 	}
 }

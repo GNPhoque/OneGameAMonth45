@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,13 +19,18 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float cameraMaxRotationPerSecond;
 	[SerializeField] private Camera camera;
 
+	[SerializeField] TextMeshProUGUI lapCounterText;
+	[SerializeField] TextMeshProUGUI positionText;
+
 	private Rigidbody rb;
 	private new Transform transform;
 
+	public int currentLap;
 	private float inputAccel;
+	public float distance;
 	private float inputBrake;
 	private float currentZTilt;
-	float currentCameraForward;
+	private float currentCameraForward;
 	private Vector2 inputDirection;
 
 	public event Action<PlayerController> OnRespawnPressed;
@@ -131,5 +137,20 @@ public class PlayerController : MonoBehaviour
 	public void ChangeAccel(float change)
 	{
 		accelRatio += change;
+	}
+
+	public void LapCompleted()
+	{
+		currentLap++;
+		lapCounterText.text = $"Lap : {currentLap}/{GameManager.instance.raceLaps}";
+		if(currentLap == GameManager.instance.raceLaps)
+		{
+			//TODO : qqch
+		}
+	}
+
+	public void UpdatePosition(int position)
+	{
+		positionText.text = $"Pos : {position + 1}";
 	}
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+	[SerializeField] public int distance;
+
 	public Action<PlayerController, Checkpoint> OnPlayerEntered;
 
 	private void OnTriggerEnter(Collider other)
