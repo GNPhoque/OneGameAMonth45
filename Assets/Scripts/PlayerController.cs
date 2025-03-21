@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
 			currentCameraForward += 360;
 		}
 		currentCameraForward = Mathf.MoveTowards(currentCameraForward, euler.y, cameraMaxRotationPerSecond * Time.fixedDeltaTime);
+		currentCameraForward = Mathf.Clamp(currentCameraForward, euler.y - 50, euler.y + 50);
 		camera.transform.rotation = Quaternion.Euler(22f, currentCameraForward, 0f);
 
 		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
