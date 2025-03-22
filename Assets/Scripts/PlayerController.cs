@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody rb;
 	private new Transform transform;
 
+	private bool canMove = true;
 	public int currentLap;
 	private float inputAccel;
 	public float distance;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
 	private void FixedUpdate()
 	{
 		Move();
+		SmoothCamera();
 	} 
 	#endregion
 
@@ -83,7 +85,6 @@ public class PlayerController : MonoBehaviour
 	public void OnStart(InputValue state)
 	{
 		Debug.Log(state.isPressed);
-		MinigameManager.instance.StartManager();
 	}
 
 	public void OnDirection(InputValue state)
@@ -97,6 +98,10 @@ public class PlayerController : MonoBehaviour
 	private void Move()
 	{
 		//Can move?
+		if (!canMove)
+		{
+			return;
+		}
 
 		//Acceleration
 		Vector3 accel = transform.forward* inputAccel * speedMult * accelRatio;
@@ -118,8 +123,15 @@ public class PlayerController : MonoBehaviour
 		graphicsTransform.rotation = Quaternion.Euler(euler.x, yRotation, euler.z + zTilt);
 
 		//Camera smoothing
-		Vector3 cameraEuler = camera.transform.rotation.eulerAngles;
-		if(currentCameraForward - euler.y > 180)
+
+		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
+		rb.MoveRotation(newRotation);
+	}
+
+	private void SmoothCamera()
+	{
+		Vector3 euler = rb.rotation.eulerAngles;
+		if (currentCameraForward - euler.y > 180)
 		{
 			currentCameraForward -= 360;
 		}
@@ -130,9 +142,6 @@ public class PlayerController : MonoBehaviour
 		currentCameraForward = Mathf.MoveTowards(currentCameraForward, euler.y, cameraMaxRotationPerSecond * Time.fixedDeltaTime);
 		currentCameraForward = Mathf.Clamp(currentCameraForward, euler.y - 50, euler.y + 50);
 		camera.transform.rotation = Quaternion.Euler(22f, currentCameraForward, 0f);
-
-		Quaternion newRotation = Quaternion.Euler(euler.x, yRotation, euler.z);
-		rb.MoveRotation(newRotation);
 	}
 
 	public void ChangeAccel(float change)
@@ -153,5 +162,15 @@ public class PlayerController : MonoBehaviour
 	public void UpdatePosition(int position)
 	{
 		positionText.text = $"Pos : {position + 1}";
+	}
+
+	public void DisableMovement()
+	{
+		canMove = false;
+	}
+
+	public void EnableMovement()
+	{
+		canMove = true;
 	}
 }
