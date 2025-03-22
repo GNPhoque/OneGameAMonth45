@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ReflexMinigame")]
-public class ReflexMinigame : AMinigame
+[CreateAssetMenu(fileName = "DropMinigame")]
+public class DropMinigame : AMinigame
 {
-	[SerializeField] private Sprite aButtonOn;
+	[SerializeField] private Sprite noButton;
+	[SerializeField] private float delayBeforeStart;
 
 	protected override IEnumerator GameSteps()
 	{
 		gameCompleted = false;
 		gameTimeout = false;
 		inputImage.gameObject.SetActive(true);
-        inputImage.sprite = aButtonOn;
-		//Todo : background reflex
+		inputImage.sprite = noButton;
+
+		yield return new WaitForSeconds(delayBeforeStart);
 
 		GameManager.instance.StartCoroutine(CancelOnTimeout());
 
@@ -21,34 +23,29 @@ public class ReflexMinigame : AMinigame
 		for (int i = 0; i < GameManager.instance.playerControllers.Count; i++)
 		{
 			PlayerController player = GameManager.instance.playerControllers[i];
-			player.OnConfirmPressed += CheckMinigameInputConfirm;
+			player.OnInputPressed += CheckMinigameInputConfirm;
 		}
 
-		while (!gameCompleted && !gameTimeout)
+		while (!gameTimeout)
 		{
 			yield return null;
 			if (inputOk)
 			{
 				inputOk = false;
-				gameCompleted = true;
-
-				OnMinigameCleared?.Invoke(lastInputPlayer);
 				GiveReward(lastInputPlayer);
 			}
 		}
 
 		if (gameTimeout)
 		{
-			//Malus?
 			OnMinigameCleared?.Invoke(null);
-			GiveReward(null);
 		}
 
-		//Subscribe to player button
+		//Unsubscribe to player button
 		for (int i = 0; i < GameManager.instance.playerControllers.Count; i++)
 		{
 			PlayerController player = GameManager.instance.playerControllers[i];
-			player.OnConfirmPressed -= CheckMinigameInputConfirm;
+			player.OnInputPressed -= CheckMinigameInputConfirm;
 		}
 
 		inputImage.gameObject.SetActive(false);
@@ -57,14 +54,7 @@ public class ReflexMinigame : AMinigame
 	private void GiveReward(PlayerController pc)
 	{
 		//Rollback all players to last checkpoint
-		foreach (var item in GameManager.instance.playerControllers)
-		{
-			if (item == pc)
-			{
-				continue;
-			}
-
-			GameManager.instance.PlayerController_OnRespawnPressed(item);
-		}
+		GameManager.instance.PlayerController_OnRespawnPressed(pc);
+		//TODO : apply slow? (balancing question)
 	}
 }

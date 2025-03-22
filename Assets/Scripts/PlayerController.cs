@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
 	public event Action<PlayerController> OnRespawnPressed;
 	public event Action<PlayerController> OnConfirmPressed;
+	public event Action<PlayerController> OnInputPressed;
 	public event Action<PlayerController, Vector2> OnDirectionChanged;
 
 	#region MONOBEHAVIOUR
@@ -62,24 +63,34 @@ public class PlayerController : MonoBehaviour
 	{
 		//Debug.Log(state.Get<float>());
 		inputAccel = state.Get<float>();
+		if(!Mathf.Approximately(inputAccel, 0f))
+		{
+			OnInputPressed?.Invoke(this);
+		}
 	}
 
 	public void OnBrake(InputValue state)
 	{
 		//Debug.Log(state.Get<float>());
 		inputBrake = state.Get<float>();
+		if (!Mathf.Approximately(inputBrake, 0f))
+		{
+			OnInputPressed?.Invoke(this);
+		}
 	}
 
 	public void OnConfirm(InputValue state)
 	{
 		Debug.Log(state.isPressed);
 		OnConfirmPressed?.Invoke(this);
+		OnInputPressed?.Invoke(this);
 	}
 
 	public void OnCancel(InputValue state)
 	{
 		Debug.Log(state.isPressed);
 		OnRespawnPressed?.Invoke(this);
+		OnInputPressed?.Invoke(this);
 	}
 
 	public void OnStart(InputValue state)
@@ -92,6 +103,10 @@ public class PlayerController : MonoBehaviour
 		//Debug.Log(state.Get<Vector2>());
 		inputDirection = state.Get<Vector2>();
 		OnDirectionChanged?.Invoke(this, inputDirection);
+		if (!Mathf.Approximately(inputDirection.magnitude, 0f))
+		{
+			OnInputPressed?.Invoke(this);
+		}
 	} 
 	#endregion
 
