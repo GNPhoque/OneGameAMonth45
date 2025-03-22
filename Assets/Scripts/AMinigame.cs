@@ -10,12 +10,15 @@ public abstract class AMinigame : ScriptableObject
 	protected bool minigameOk = false;
 	protected bool gameTimeout = false;
 	protected bool gameCompleted = false;
+	[SerializeField] [TextArea] protected string gameDescription;
 
 	protected Image inputImage;
 	protected Image inputImageBackground;
 	protected PlayerController lastInputPlayer;
 
 	public Action<PlayerController> OnMinigameCleared;
+
+	public string GetGameDescription() => gameDescription;
 
 	public void Trigger(Image input, Image background)
 	{
