@@ -814,13 +814,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.47717127, y: 0.0007983228, z: -0.00043328482, w: -0.8788099}
-  m_LocalPosition: {x: -19.5, y: 49.43, z: -10.268112}
+  m_LocalRotation: {x: 0.3063848, y: 0, z: 0, w: 0.95190775}
+  m_LocalPosition: {x: -22.106033, y: 44.398987, z: -28.477783}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1534353958}
-  m_LocalEulerAnglesHint: {x: 80, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35.683, y: 0, z: 0}
 --- !u!1 &1101036409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1030,24 @@ MonoBehaviour:
   lapDistance: 1000
   raceLaps: 8
   positionRefreshDelay: 0.1
+  playerCamMasks:
+  - serializedVersion: 2
+    m_Bits: 119
+  - serializedVersion: 2
+    m_Bits: 183
+  - serializedVersion: 2
+    m_Bits: 311
+  - serializedVersion: 2
+    m_Bits: 567
+  playerVCamMasks:
+  - serializedVersion: 2
+    m_Bits: 64
+  - serializedVersion: 2
+    m_Bits: 128
+  - serializedVersion: 2
+    m_Bits: 256
+  - serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &1152686633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +1070,7 @@ MonoBehaviour:
   minigames:
   - {fileID: 11400000, guid: d42dbc24db5e8f0438cc5e262116303b, type: 2}
   - {fileID: 11400000, guid: 70a50d9dbfd4f49438638da5a5d8b5d8, type: 2}
+  - {fileID: 11400000, guid: 90685d668a01f2046b47e10df4684863, type: 2}
   isMinigameRunning: 0
 --- !u!114 &1152686634
 MonoBehaviour:

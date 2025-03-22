@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] public int raceLaps;
 	[SerializeField] public float positionRefreshDelay;
 
+	[SerializeField] private LayerMask[] playerCamMasks;
+	[SerializeField] private LayerMask[] playerVCamMasks;
+
 	private Dictionary<PlayerController, Checkpoint> playerCheckpoints;
 	private Dictionary<PlayerController, Checkpoint> playerDistanceCheckpoints;
 
@@ -92,6 +95,9 @@ public class GameManager : MonoBehaviour
 		pc.OnConfirmPressed += Pc_OnConfirmPressed;
 
 		pc.transform.position = startPosition.position;
+
+		pc.camera.cullingMask = playerCamMasks[playerControllers.Count - 1];
+		pc.vCamera.gameObject.layer = LayerMask.NameToLayer($"P{playerControllers.Count}Cam");
 	}
 
 	private void Pc_OnConfirmPressed(PlayerController obj)

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float rotaWheelie;
 	[SerializeField] private float tiltMaxPerSecond;
 	[SerializeField] private float cameraMaxRotationPerSecond;
-	[SerializeField] private Camera camera;
+	[SerializeField] public Camera camera;
+	[SerializeField] public CinemachineVirtualCamera vCamera;
 
 	[SerializeField] TextMeshProUGUI lapCounterText;
 	[SerializeField] TextMeshProUGUI positionText;
@@ -51,10 +53,17 @@ public class PlayerController : MonoBehaviour
 		currentCameraForward = camera.transform.rotation.eulerAngles.y;
 	}
 
+	private void Update()
+	{
+		if (!Mathf.Approximately(inputAccel, 0f) || !Mathf.Approximately(inputDirection.x, 0f))
+		{
+			OnInputPressed?.Invoke(this);
+		}
+	}
+
 	private void FixedUpdate()
 	{
 		Move();
-		SmoothCamera();
 	} 
 	#endregion
 
@@ -143,22 +152,6 @@ public class PlayerController : MonoBehaviour
 		rb.MoveRotation(newRotation);
 	}
 
-	private void SmoothCamera()
-	{
-		Vector3 euler = rb.rotation.eulerAngles;
-		if (currentCameraForward - euler.y > 180)
-		{
-			currentCameraForward -= 360;
-		}
-		else if (euler.y - currentCameraForward > 180)
-		{
-			currentCameraForward += 360;
-		}
-		currentCameraForward = Mathf.MoveTowards(currentCameraForward, euler.y, cameraMaxRotationPerSecond * Time.fixedDeltaTime);
-		currentCameraForward = Mathf.Clamp(currentCameraForward, euler.y - 50, euler.y + 50);
-		camera.transform.rotation = Quaternion.Euler(22f, currentCameraForward, 0f);
-	}
-
 	public void ChangeAccel(float change)
 	{
 		accelRatio += change;
@@ -187,5 +180,17 @@ public class PlayerController : MonoBehaviour
 	public void EnableMovement()
 	{
 		canMove = true;
+	}
+
+	public IEnumerator SetFOV(float fov)
+	{
+		float fovBefore = vCamera.m_Lens.FieldOfView;
+		float elapsed = 0;
+		while (elapsed < .2f)
+		{
+			vCamera.m_Lens.FieldOfView = Mathf.Lerp(fovBefore, fov, elapsed / 0.2f);
+			yield return null;
+			elapsed += Time.deltaTime;
+		}
 	}
 }

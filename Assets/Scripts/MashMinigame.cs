@@ -93,9 +93,11 @@ public class MashMinigame : AMinigame
 
     private IEnumerator GiveReward(PlayerController pc)
     {
-        //Boost winner speed
+        //Boost winner speed + fov
         pc.ChangeAccel(rewardBoostAmount);
+        pc.StartCoroutine(pc.SetFOV(90f));
         yield return new WaitForSeconds(rewardBoostDuration);
 		pc.ChangeAccel(-rewardBoostAmount);
+		pc.StartCoroutine(pc.SetFOV(60f));
 	}
 }
