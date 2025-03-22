@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Mash Minigame
   m_EditorClassIdentifier: 
   gameDescription: Spam the button to earn a boost
-  aButtonOn: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
-  aButtonOff: {fileID: 21300000, guid: c3ee95fa0a43a434da317947797ccbbc, type: 3}
+  aButtonOn: {fileID: 21300000, guid: 6e7f37ca1f2cc9c4398aed0da9fbe185, type: 3}
+  aButtonOff: {fileID: 21300000, guid: faadf5e63efb4924f9e2951d00f2297f, type: 3}
   animationStatesDuration: 0.5
   rewardBoostAmount: 0.2
   rewardBoostDuration: 0.5

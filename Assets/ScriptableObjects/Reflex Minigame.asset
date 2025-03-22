@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Reflex Minigame
   m_EditorClassIdentifier: 
   gameDescription: "Press the button to send \nother back to last checkpoint"
-  aButtonOn: {fileID: 21300000, guid: c0af2f9a4f75efa4a98f34502b8b5b7f, type: 3}
+  aButtonOn: {fileID: 21300000, guid: 6e7f37ca1f2cc9c4398aed0da9fbe185, type: 3}
